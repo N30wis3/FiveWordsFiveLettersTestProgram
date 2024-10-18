@@ -43,10 +43,13 @@ namespace FiveWordsFiveLettersProgram
                 switch (selectedItem.Content.ToString())
                 {
                     case "TestData":
+                        Progress.Maximum = 1;
                         return "TestData.txt";
                     case "BetaData":
+                        Progress.Maximum = 77;
                         return "BetaData.txt";
                     case "AlphaData":
+                        Progress.Maximum = 831;
                         return "AlphaData.txt";
                     default:
                         return null;
@@ -68,17 +71,18 @@ namespace FiveWordsFiveLettersProgram
 
             // Calculate total combinations
             int totalCombinations = CalculateTotalCombinations(words.Count);
-            Progress.Maximum = totalCombinations;
+           // Progress.Maximum = totalCombinations;
+            Progress.Value = 0;
 
             // Debug output for total combinations
-            Console.WriteLine($"Total combinations to check: {totalCombinations}");
+            MessageBox.Show($"Total combinations to check: {totalCombinations}");
 
             // Find combinations with exactly 25 unique letters
             List<string[]> validCombinations = await Task.Run(() => FindCombinationsWithUniqueLetters(words));
 
             // Update the UI with results
-            ResultsText.Text = $"Found {validCombinations.Count} combinations with 25 unique letters.";
-            Progress.Value = totalCombinations; // Complete progress
+            ResultsText.Text = $"Found {validCombinations.Count}";
+            Progress.Value = validCombinations.Count;
         }
 
         private int CalculateTotalCombinations(int wordCount)
@@ -100,7 +104,7 @@ namespace FiveWordsFiveLettersProgram
                     .ToList();
 
                 // Debug output
-                Console.WriteLine($"Loaded {wordsList.Count} valid 5-letter words from {filePath}.");
+                MessageBox.Show($"Loaded {wordsList.Count} valid 5-letter words from {filePath}.");
                 return wordsList;
             }
             catch (Exception ex)
